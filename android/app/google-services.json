@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "778102830455",
+    "firebase_url": "https://learningdart-4e105-default-rtdb.firebaseio.com",
+    "project_id": "learningdart-4e105",
+    "storage_bucket": "learningdart-4e105.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778102830455:android:49bd347992bdbc8dafdd72",
+        "android_client_info": {
+          "package_name": "com.example.learningdart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778102830455-umbn48rju2q8b22t96rdsd26rvt3evip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi8bwQSA2WXt_WYWiI_2__bTx9gUkdrzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778102830455-umbn48rju2q8b22t96rdsd26rvt3evip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
