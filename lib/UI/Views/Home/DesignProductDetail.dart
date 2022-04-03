@@ -51,7 +51,7 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
               children: [
                 Container(
                   color: Colors.white,
-                  width: MediaQuery.of(context).size.width,
+                  width: context.dynamicWidth(1),
                   margin: const EdgeInsets.all(20.0),
                   child: Column(children: [
                     CarouselSlider.builder(
@@ -88,68 +88,7 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
                         ],
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'Ürün Adı : ',
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${widget.myProduct.name}',
-                                textAlign: TextAlign.right,
-                                style: const TextStyle(
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                'Ürün Marka : ',
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${widget.myProduct.brand}',
-                                textAlign: TextAlign.right,
-                                style: const TextStyle(
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                'Ürün Fiyatı : ',
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${widget.myProduct.price}',
-                                textAlign: TextAlign.right,
-                                style: const TextStyle(
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    _productFeaturesTable(context),
                   ]),
                 ),
               ],
@@ -161,22 +100,25 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
           SliverToBoxAdapter(
             child: Container(
               color: Colors.white,
-              width: MediaQuery.of(context).size.width,
+              width: context.dynamicWidth(1),
               margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Column(
                 children: [
-                  const TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Yorum Yapın",
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Yorum Yapın",
+                      ),
                     ),
                   ),
                   Container(
                     width: context.dynamicWidth(1),
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    margin: const EdgeInsets.fromLTRB(10, 10, 1, 10),
                     child: RaisedButton(
                       child: const Text(
                         "Yorum Ekle",
@@ -202,52 +144,50 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 0 ? Icons.home : Icons.home_outlined,
-              color: _selectedIndex == 0 ? Colors.orange : Colors.black,
-            ),
-            label: 'Home',
+    );
+  }
+
+  DataTable _productFeaturesTable(BuildContext context) {
+    return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Özellik Adı',
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 1
-                  ? Icons.shopping_cart
-                  : Icons.shopping_cart_outlined,
-              color: _selectedIndex == 1 ? Colors.orange : Colors.black,
-            ),
-            label: 'Shop',
+        ),
+        DataColumn(
+          label: Text(
+            'Değeri',
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 2
-                  ? Icons.shopping_bag
-                  : Icons.shopping_bag_outlined,
-              color: _selectedIndex == 2 ? Colors.orange : Colors.black,
+        ),
+      ],
+      rows: List<DataRow>.generate(
+          widget.myProduct.description == null
+              ? 0
+              : widget.myProduct.description!.length, (index) {
+        return DataRow(cells: <DataCell>[
+          DataCell(
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              width: context.dynamicWidth(0.40),
+              child: Text(
+                '${widget.myProduct.description?.keys.elementAt(index)}',
+              ),
             ),
-            label: 'Bag',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 3 ? Icons.favorite : Icons.favorite_outline,
-              color: _selectedIndex == 3 ? Colors.orange : Colors.black,
+          DataCell(
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              width: context.dynamicWidth(0.40),
+              child: Text(
+                '${widget.myProduct.description![widget.myProduct.description?.keys.elementAt(index)]}',
+              ),
             ),
-            label: 'Favorites',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 4 ? Icons.person : Icons.person_outline,
-              color: _selectedIndex == 4 ? Colors.orange : Colors.black,
-            ),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.orange,
-        onTap: _onItemTapped,
-      ),
+        ]);
+      }),
     );
   }
 

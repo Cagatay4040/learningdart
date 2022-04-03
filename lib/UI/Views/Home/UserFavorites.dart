@@ -1,32 +1,16 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:learningdart/UI/context_extensions.dart';
 import 'package:learningdart/Core/Model/DesignProduct.dart';
 import 'package:learningdart/UI/Views/Home/DesignProductDetail.dart';
-import 'package:learningdart/UI/context_extensions.dart';
 
-class PageDesign extends StatefulWidget {
-  const PageDesign({Key? key}) : super(key: key);
+class UserFavorites extends StatefulWidget {
+  const UserFavorites({Key? key}) : super(key: key);
 
   @override
-  State<PageDesign> createState() => _PageDesignState();
+  State<UserFavorites> createState() => _UserFavoritesState();
 }
 
-class _PageDesignState extends State<PageDesign> {
-  List<String> categories = [
-    "T-shirts",
-    "Chop tops",
-    "Sleeveless",
-    "Pants",
-    "Vallets",
-    "Jackets",
-    "Shoes",
-    "Phone",
-    "Computer",
-    "Mouse",
-    "Keyboard"
-  ];
-
+class _UserFavoritesState extends State<UserFavorites> {
   List<DesignProduct> products = [
     DesignProduct(
         1,
@@ -40,30 +24,6 @@ class _PageDesignState extends State<PageDesign> {
         "model_mango",
         51,
         4),
-    DesignProduct(
-        2,
-        "Blouse",
-        {"renk": "kırmızı", "renk1": "mavi"},
-        [
-          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png"
-        ],
-        "Dorothy Perkins",
-        "model_Dorothy_Perkins",
-        34,
-        0),
-    DesignProduct(
-        3,
-        "T-Shirt",
-        {"renk": "Sarı", "renk1": "mavi", "renk2": "kırmızı"},
-        [
-          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png"
-        ],
-        "LOST link",
-        "model_LOST_link",
-        12,
-        5),
     DesignProduct(
         4,
         "Shirt",
@@ -93,37 +53,12 @@ class _PageDesignState extends State<PageDesign> {
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Text(
-                      "My Title",
+                      "Favorilerim",
                       style: Theme.of(context)
                           .primaryTextTheme
                           .headline3
                           ?.copyWith(color: Colors.black),
                     ),
-                  ),
-                  SizedBox(
-                    height: context.dynamicHight(0.1),
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  '${categories[index]}',
-                                  style:
-                                      Theme.of(context).primaryTextTheme.button,
-                                ),
-                              ),
-                            )),
                   ),
                 ],
               ),
@@ -198,7 +133,7 @@ class _PageDesignState extends State<PageDesign> {
             AspectRatio(
               aspectRatio: 1,
               child: Image.network(
-                "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
+                product.images![0],
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return _waitingWidget;
@@ -336,7 +271,6 @@ class _PageDesignState extends State<PageDesign> {
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        // borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
