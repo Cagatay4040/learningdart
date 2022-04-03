@@ -18,6 +18,8 @@ class _LoginView extends State<LoginView> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
+  bool _passwordVisible = true;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -61,141 +63,128 @@ class _LoginView extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: ListView(
-        children: [
-          SizedBox(
-            height: context.dynamicHight(0.25),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            width: context.dynamicWidth(1),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                  offset: const Offset(0, 2), // changes position of shadow
-                ),
-              ],
-            ),
-            child: FutureBuilder(
-              future: _initializerFirebase(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.done:
-                    return Form(
-                      key: _formKey,
-                      child: Column(
+      body: FutureBuilder(
+        future: _initializerFirebase(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return Form(
+                key: _formKey,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Text(
+                          "Giriş Yap",
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .headline4
+                              ?.copyWith(color: Colors.black),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        child: TextField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          autocorrect: false,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(), labelText: "Email"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        child: TextField(
+                          controller: _passwordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          enableSuggestions: false,
+                          obscureText: _passwordVisible,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "Şifre",
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        child: RaisedButton(
+                            child: const Text(
+                              "Giriş Yap",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: Colors.blue,
+                            onPressed: () async {
+                              User? user = await loginUsingEmailPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  context: context);
+
+                              if (user != null) {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Products()));
+                              } else {
+                                loginErrorPopup(context);
+                              }
+                            }),
+                      ),
+                      Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            Text(
+                              'Üye değilmisin',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: Colors.black,
+                                  ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignupView()));
+                              },
                               child: Text(
-                                "Giriş Yap",
+                                'Üye Ol',
                                 style: Theme.of(context)
                                     .primaryTextTheme
-                                    .headline4
-                                    ?.copyWith(color: Colors.black),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                              child: TextField(
-                                controller: _emailController,
-                                keyboardType: TextInputType.emailAddress,
-                                autocorrect: false,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: "Email"),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                              child: TextField(
-                                controller: _passwordController,
-                                keyboardType: TextInputType.visiblePassword,
-                                enableSuggestions: false,
-                                obscureText: true,
-                                autocorrect: false,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: "Şifre"),
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                              child: RaisedButton(
-                                  child: const Text(
-                                    "Giriş Yap",
-                                    style: TextStyle(
-                                      color: Colors.white,
+                                    .button
+                                    ?.copyWith(
+                                      color: Colors.blue,
                                     ),
-                                  ),
-                                  color: Colors.blue,
-                                  onPressed: () async {
-                                    User? user = await loginUsingEmailPassword(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                        context: context);
-
-                                    if (user != null) {
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Products()));
-                                    } else {
-                                      loginErrorPopup(context);
-                                    }
-                                  }),
+                              ),
                             ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Üye değilmisin',
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: Colors.black,
-                                        ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SignupView()));
-                                    },
-                                    child: Text(
-                                      'Üye Ol',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .button
-                                          ?.copyWith(
-                                            color: Colors.blue,
-                                          ),
-                                    ),
-                                  ),
-                                ]),
                           ]),
-                    );
+                    ]),
+              );
 
-                  default:
-                    return _waitingWidget;
-                }
-              },
-            ),
-          ),
-          SizedBox(
-            height: context.dynamicHight(0.25),
-          ),
-        ],
+            default:
+              return _waitingWidget;
+          }
+        },
       ),
     );
   }

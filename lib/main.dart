@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:learningdart/UI/Views/Authentication/loginView.dart';
 
-//import 'UI/Views/Home/PageDesign.dart';
+import 'UI/Views/Home/PageDesign.dart';
 //import 'package:learningdart/UI/Views/Home/InfinityTextField.dart';
-import 'UI/Views/Authentication/loginView.dart';
 // import 'UI/Views/Home/ProductPage.dart';
 
 void main() {

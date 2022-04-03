@@ -1,9 +1,13 @@
 class DesignProduct {
+  int? id;
   String? name;
+  Map<String, String>? description;
+  List<String>? images;
   String? brand;
-  int? price;
-  int? point;
-  bool isFav;
+  String? model;
+  double? price;
+  int? rating;
 
-  DesignProduct(this.name, this.brand, this.price, this.point, this.isFav);
+  DesignProduct(this.id, this.name, this.description, this.images, this.brand,
+      this.model, this.price, this.rating);
 }

@@ -21,13 +21,7 @@ class DesignProductDetail extends StatefulWidget {
 class _DesignProductDetailState extends State<DesignProductDetail> {
   double userPoint = 0;
   int _selectedIndex = 0;
-
   int currentPos = 0;
-  List<String> listPaths = [
-    "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-    "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-    "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-  ];
 
   List<Comment> comments = [
     Comment("cagdulger1@gmail.com", DateTime.now(), "Çok güzel", 5),
@@ -62,15 +56,17 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
                   child: Column(children: [
                     CarouselSlider.builder(
                       options: CarouselOptions(
+                        enableInfiniteScroll: false,
                         enlargeCenterPage: true,
                         height: context.isPortrait()
                             ? context.dynamicHight(0.30)
                             : context.dynamicWidth(0.30),
                       ),
-                      itemCount: 3,
+                      itemCount: widget.myProduct.images?.length,
                       itemBuilder: (BuildContext context, int itemIndex,
                           int pageViewIndex) {
-                        return Image.network(listPaths[itemIndex]);
+                        return Image.network(
+                            widget.myProduct.images![itemIndex]);
                       },
                     ),
                     Container(
@@ -174,7 +170,9 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
                     maxLines: 5,
                     autocorrect: false,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Yorum Yapın"),
+                      border: OutlineInputBorder(),
+                      labelText: "Yorum Yapın",
+                    ),
                   ),
                   Container(
                     width: context.dynamicWidth(1),
@@ -388,15 +386,13 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(
-            widget.myProduct.isFav ? Icons.favorite : Icons.favorite_outline,
-            color: widget.myProduct.isFav ? Colors.red : Colors.black,
+          icon: const Icon(
+            Icons.favorite,
+            color: Colors.black,
+            // widget.myProduct.isFav ? Icons.favorite : Icons.favorite_outline,
+            // color: widget.myProduct.isFav ? Colors.red : Colors.black,
           ),
-          onPressed: () {
-            setState(() {
-              widget.myProduct.isFav = !widget.myProduct.isFav;
-            });
-          },
+          onPressed: () {},
         ),
         IconButton(
           icon: const Icon(Icons.share),

@@ -30,18 +30,53 @@ class _PageDesignState extends State<PageDesign> {
   ];
 
   List<DesignProduct> products = [
-    DesignProduct("Pullover", "Mango", 51, 4, false),
-    DesignProduct("Blouse", "Dorothy Perkins", 34, 0, false),
-    DesignProduct("T-Shirt", "LOST link", 12, 5, false),
-    DesignProduct("Shirt", "Topshop", 51, 4, false),
-    DesignProduct("Pullover", "Mango", 51, 4, false),
-    DesignProduct("Blouse", "Dorothy Perkins", 34, 0, false),
-    DesignProduct("T-Shirt", "LOST link", 12, 5, false),
-    DesignProduct("Shirt", "Topshop", 51, 4, false),
-    DesignProduct("Pullover", "Mango", 51, 4, false),
-    DesignProduct("Blouse", "Dorothy Perkins", 34, 0, false),
-    DesignProduct("T-Shirt", "LOST link", 12, 5, false),
-    DesignProduct("Shirt", "Topshop", 51, 4, false),
+    DesignProduct(
+        1,
+        "Pullover",
+        {"renk": "mavi"},
+        [
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png"
+        ],
+        "Mango",
+        "model_mango",
+        51,
+        4),
+    DesignProduct(
+        2,
+        "Blouse",
+        {"renk": "kırmızı", "renk1": "mavi"},
+        [
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png"
+        ],
+        "Dorothy Perkins",
+        "model_Dorothy_Perkins",
+        34,
+        0),
+    DesignProduct(
+        3,
+        "T-Shirt",
+        {"renk": "Sarı", "renk1": "mavi", "renk2": "kırmızı"},
+        [
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png"
+        ],
+        "LOST link",
+        "model_LOST_link",
+        12,
+        5),
+    DesignProduct(
+        4,
+        "Shirt",
+        {"renk": "Sarı"},
+        [
+          "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png"
+        ],
+        "Topshop",
+        "model_Topshop",
+        51,
+        4),
   ];
 
   void _onItemTapped(int index) {
@@ -112,7 +147,7 @@ class _PageDesignState extends State<PageDesign> {
               (BuildContext context, int index) {
                 return _productCard(products[index]);
               },
-              childCount: categories.length,
+              childCount: products.length,
             ),
           ),
         ],
@@ -267,7 +302,7 @@ class _PageDesignState extends State<PageDesign> {
                         child: FittedBox(
                           child: Row(
                             children: [
-                              product.point! <= 0
+                              product.rating! <= 0
                                   ? const Icon(
                                       Icons.star_outline,
                                       color: Colors.black,
@@ -276,7 +311,7 @@ class _PageDesignState extends State<PageDesign> {
                                       Icons.star,
                                       color: Colors.yellow,
                                     ),
-                              product.point! <= 1
+                              product.rating! <= 1
                                   ? const Icon(
                                       Icons.star_outline,
                                       color: Colors.black,
@@ -285,7 +320,7 @@ class _PageDesignState extends State<PageDesign> {
                                       Icons.star,
                                       color: Colors.yellow,
                                     ),
-                              product.point! <= 2
+                              product.rating! <= 2
                                   ? const Icon(
                                       Icons.star_outline,
                                       color: Colors.black,
@@ -294,7 +329,7 @@ class _PageDesignState extends State<PageDesign> {
                                       Icons.star,
                                       color: Colors.yellow,
                                     ),
-                              product.point! <= 3
+                              product.rating! <= 3
                                   ? const Icon(
                                       Icons.star_outline,
                                       color: Colors.black,
@@ -303,7 +338,7 @@ class _PageDesignState extends State<PageDesign> {
                                       Icons.star,
                                       color: Colors.yellow,
                                     ),
-                              product.point! <= 4
+                              product.rating! <= 4
                                   ? const Icon(
                                       Icons.star_outline,
                                       color: Colors.black,
@@ -340,15 +375,13 @@ class _PageDesignState extends State<PageDesign> {
               alignment: Alignment.topRight,
               child: IconButton(
                 onPressed: () {
-                  setState(() {
-                    product.isFav = !product.isFav;
-                  });
+                  // setState(() {
+                  //   product.isFav = !product.isFav;
+                  // });
                 },
-                icon: Icon(
-                  product.isFav == true
-                      ? Icons.favorite
-                      : Icons.favorite_outline,
-                  color: product.isFav == true ? Colors.red : Colors.black,
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
                 ),
               ),
             ),
