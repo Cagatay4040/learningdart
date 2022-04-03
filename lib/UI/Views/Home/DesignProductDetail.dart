@@ -20,25 +20,33 @@ class DesignProductDetail extends StatefulWidget {
 
 class _DesignProductDetailState extends State<DesignProductDetail> {
   double userPoint = 0;
-  int _selectedIndex = 0;
   int currentPos = 0;
 
+  late final TextEditingController _commentController;
+
+  @override
+  void initState() {
+    _commentController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
   List<Comment> comments = [
-    Comment("cagdulger1@gmail.com", DateTime.now(), "Çok güzel", 5),
-    Comment("cagdulger2@gmail.com", DateTime.now(), "Tavsiye Ederim", 4),
-    Comment("cagdulger3@gmail.com", DateTime.now(), "Ürün bozuk geldi", 1),
+    Comment("cagdulger1@gmail.com", DateTime.now(), "Çok güzel", 5, 1),
+    Comment("cagdulger2@gmail.com", DateTime.now(), "Tavsiye Ederim", 4, 2),
+    Comment("cagdulger3@gmail.com", DateTime.now(), "Ürün bozuk geldi", 1, 3),
     Comment(
         "cagdulger4@gmail.com",
         DateTime.now(),
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        3),
+        3,
+        4),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,13 +112,14 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
               margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: TextField(
+                      controller: _commentController,
                       keyboardType: TextInputType.multiline,
                       maxLines: 5,
                       autocorrect: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Yorum Yapın",
                       ),
@@ -127,7 +136,30 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
                         ),
                       ),
                       color: Colors.blue,
-                      onPressed: () {},
+                      onPressed: () {
+                        // Yorumun yapildigi yer //
+
+                        if (_commentController.text.isEmpty) {
+                          errorPopup(context, "Yorum kısmı boş geçilemez");
+                          return;
+                        }
+                        if (userPoint == 0) {
+                          errorPopup(context, "Lütfen ürüne puan veriniz");
+                          return;
+                        }
+
+                        Comment newComment = Comment(
+                            "newCommentMail@gmail.com",
+                            DateTime.now(),
+                            _commentController.text,
+                            userPoint,
+                            1);
+                        setState(() {
+                          comments.add(newComment);
+                          _commentController.text = "";
+                          userPoint = 0;
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -301,7 +333,6 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
             ),
             onRatingUpdate: (rating) {
               userPoint = rating;
-              print(userPoint);
             },
           ),
         ),
@@ -343,6 +374,37 @@ class _DesignProductDetailState extends State<DesignProductDetail> {
           },
         )
       ],
+    );
+  }
+
+  Future<dynamic> errorPopup(BuildContext context, String errorMessage) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+          "Hata",
+          style: Theme.of(context)
+              .primaryTextTheme
+              .headline5
+              ?.copyWith(color: Colors.black),
+        ),
+        content: Text(
+          errorMessage,
+          style: Theme.of(context)
+              .primaryTextTheme
+              .bodyMedium
+              ?.copyWith(color: Colors.black),
+        ),
+        elevation: 10.0,
+        actions: [
+          TextButton(
+            child: const Text('Tamam'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

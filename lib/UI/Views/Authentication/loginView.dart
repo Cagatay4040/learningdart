@@ -62,7 +62,7 @@ class _LoginView extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      //resizeToAvoidBottomInset: false,
       body: FutureBuilder(
         future: _initializerFirebase(),
         builder: (context, snapshot) {
@@ -124,11 +124,14 @@ class _LoginView extends State<LoginView> {
                         width: context.dynamicWidth(1),
                         margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                         child: RaisedButton(
-                            child: const Text(
+                            child: Text(
                               "Giriş Yap",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .button!
+                                  .copyWith(
+                                    color: Colors.white,
+                                  ),
                             ),
                             color: Colors.blue,
                             onPressed: () async {
