@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:learningdart/UI/Views/Authentication/signupView.dart';
-import 'package:learningdart/UI/Views/Home/ProductPage.dart';
+import 'package:learningdart/UI/Views/Home/HomePage.dart';
 import 'package:learningdart/UI/context_extensions.dart';
 
 class LoginView extends StatefulWidget {
@@ -121,7 +121,7 @@ class _LoginView extends State<LoginView> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: context.dynamicWidth(1),
                         margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                         child: RaisedButton(
                             child: const Text(
@@ -141,7 +141,7 @@ class _LoginView extends State<LoginView> {
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const Products()));
+                                            const HomePage()));
                               } else {
                                 loginErrorPopup(context);
                               }
