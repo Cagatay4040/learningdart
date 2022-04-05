@@ -62,17 +62,23 @@ class _LoginView extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
-      body: FutureBuilder(
-        future: _initializerFirebase(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Form(
-                key: _formKey,
-                child: Column(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: _initializerFirebase(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.done:
+                return Form(
+                  key: _formKey,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: context.isPortrait()
+                            ? context.dynamicHight(0.10)
+                            : context.dynamicWidth(0.10),
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: Text(
@@ -151,43 +157,51 @@ class _LoginView extends State<LoginView> {
                             }),
                       ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Üye değilmisin',
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Üye değilmisin',
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.black,
+                                ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignupView()));
+                            },
+                            child: Text(
+                              'Üye Ol',
                               style: Theme.of(context)
                                   .primaryTextTheme
-                                  .bodyMedium
+                                  .button
                                   ?.copyWith(
-                                    color: Colors.black,
+                                    color: Colors.blue,
                                   ),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignupView()));
-                              },
-                              child: Text(
-                                'Üye Ol',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .button
-                                    ?.copyWith(
-                                      color: Colors.blue,
-                                    ),
-                              ),
-                            ),
-                          ]),
-                    ]),
-              );
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: context.isPortrait()
+                            ? context.dynamicHight(0.10)
+                            : context.dynamicWidth(0.10),
+                      ),
+                    ],
+                  ),
+                );
 
-            default:
-              return _waitingWidget;
-          }
-        },
+              default:
+                return _waitingWidget;
+            }
+          },
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:learningdart/UI/Views/Authentication/loginView.dart';
+import 'package:learningdart/UI/context_extensions.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({Key? key}) : super(key: key);
@@ -60,17 +61,24 @@ class _SignupView extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: _pageAppBarBuild(context),
-      body: FutureBuilder(
-        future: _initializerFirebase(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Form(
-                key: _formKey,
-                child: Column(
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: _initializerFirebase(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.done:
+                return Form(
+                  key: _formKey,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: context.isPortrait()
+                            ? context.dynamicHight(0.10)
+                            : context.dynamicWidth(0.10),
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: Text(
@@ -167,13 +175,20 @@ class _SignupView extends State<SignupView> {
                                       builder: (context) => const LoginView()));
                             }),
                       ),
-                    ]),
-              );
+                      SizedBox(
+                        height: context.isPortrait()
+                            ? context.dynamicHight(0.10)
+                            : context.dynamicWidth(0.10),
+                      ),
+                    ],
+                  ),
+                );
 
-            default:
-              return _waitingWidget;
-          }
-        },
+              default:
+                return _waitingWidget;
+            }
+          },
+        ),
       ),
     );
   }
